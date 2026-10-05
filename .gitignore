@@ -39,14 +39,9 @@ temp/
 *.bak
 .DS_Store
 
-# IMPORTANT EXCEPTION:
-!urban-fire-highres-pipeline/data/
-!urban-fire-highres-pipeline/data/shapefiles/
-!urban-fire-highres-pipeline/data/shapefiles/**
 
 # Additional image formats
 *.gif
-*.svg
 *.bmp
 *.ico
 
@@ -71,3 +66,12 @@ urban-fire-highres-pipeline/stage_030_dataset_builder/data/manifests/
 urban-fire-highres-pipeline/stage_030_dataset_builder/data/masters/
 urban-fire-highres-pipeline/stage_030_dataset_builder/data/patches/
 urban-fire-highres-pipeline/stage_030_dataset_builder/data/quarantine/
+
+# IMPORTANT EXCEPTIONS
+!urban-fire-highres-pipeline/data/
+!urban-fire-highres-pipeline/data/shapefiles/
+!urban-fire-highres-pipeline/data/shapefiles/**
+!urban-fire-highres-pipeline/frontend/src/assets/
+!urban-fire-highres-pipeline/frontend/src/assets/**
+!urban-fire-highres-pipeline/frontend/public/
+!urban-fire-highres-pipeline/frontend/public/**
