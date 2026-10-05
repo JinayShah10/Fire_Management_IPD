@@ -1,0 +1,20 @@
+# configs/firms.yaml
+sources:
+  - "VIIRS_SNPP_SP"
+  - "VIIRS_NOAA20_SP"
+  - "MODIS_SP"
+day_range: 5
+tile_size_degrees: 10
+request_sleep_seconds: 0.3
+max_requests_per_run: 5000
+max_retries: 3
+backoff_factor: 2.0
+filters:
+  daynight: "D"
+  confidence: ["low", "nominal", "high", "l", "n", "h", "u"]
+  min_frp: 0.0
+cluster_dist_m: 400
+persistent_days: 10
+s2_prescreen:
+  max_scene_cloud: 50
+  max_events_per_region_month: 100000

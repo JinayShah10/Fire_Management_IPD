@@ -1,0 +1,16 @@
+{
+  "requests_made": 0,
+  "cache_hits": 0,
+  "transactions_before": 0,
+  "transactions_after": 0,
+  "funnel": {
+    "raw": 2434554,
+    "dedup": 2434552,
+    "daytime": 1716804,
+    "confidence": 1716804,
+    "frp": 1716804,
+    "events": 1174544,
+    "events_capped": 11241,
+    "events_with_s2": 4454
+  }
+}

@@ -1,0 +1,69 @@
+seed: 42
+ingestion:
+  region: user_uploaded
+  start_date: "2000-01-01"
+  end_date: "2100-01-01"
+  max_images: 0
+stac:
+  url: "https://earth-search.aws.element84.com/v1"
+  collection: "sentinel-2-l2a"        # verify exact id with GET /collections at runtime; log it
+  assets: {B12: swir22, B11: swir16, B8A: nir08, B8: nir, B4: red, B3: green, B2: blue, SCL: scl}
+grid:
+  resolution_m: 20
+  patch_px: 256
+  inference_overlap_px: 64
+firms:
+  max_time_offset_hours: 24
+  prefer_closest_scene: true
+  footprint_radius_m: 375.0     # VIIRS footprint radius for cross-sensor validation
+qc:
+  max_cloud_frac: 0.15          # SCL classes 3,8,9,10 inside the patch
+  max_nodata_frac: 0.80
+  cloud_scl_classes: [3, 8, 9, 10]
+reference:
+  n_scenes: 3
+  days_before_min: 5
+  days_before_max: 45
+  max_local_cloud: 0.10
+labels:
+  # Starting points from published Sentinel-2 SWIR fire work; TUNE on validation, do not treat as universal
+  seed_b12_min: 0.35
+  seed_ratio_min: 4.0           # B12 / B8A
+  grow_b12_min: 0.25
+  grow_ratio_min: 2.0
+  grow_steps: 2
+  ignore_index: 255
+dataset:
+  split_ratios: {train: 0.70, val: 0.15, test: 0.15}
+  group_cell_deg: 0.1
+  max_negative_ratio: 1.0
+  min_fire_fraction_per_batch: 0.40
+  dB12_dropout: 0.20
+normalization:
+  reflectance_clip: [0.0, 2.0]
+  dB12_clip: [-1.0, 2.0]
+model:
+  encoder: "resnet34"
+  in_channels: 16
+  num_classes: 3                # set to 2 if industrial flags unavailable
+  pretrained: true              # fall back to false if download fails; log it
+train:
+  batch_size: 16
+  epochs: 60
+  lr: 3.0e-4
+  weight_decay: 1.0e-4
+  warmup_epochs: 3
+  grad_clip: 1.0
+  early_stop_patience: 10
+  amp: auto
+  sampler_pos_ratio: 0.40
+  validation_thresholds: [0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95, 0.97, 0.98, 0.99, 0.995]
+loss: {focal_weight: 0.5, dice_weight: 0.5, focal_gamma: 5.0}
+eval:
+  match_dist_px: 3              # 60 m at 20 m
+  min_box_side_px: 8
+  merge_dist_px: 3
+  precision_floor_for_threshold: 0.5
+  gold_set_size: 150
+display:
+  rgb_display_max: 0.3          # display only, never for model input
